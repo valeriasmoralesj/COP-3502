@@ -9,15 +9,14 @@ typedef struct node {
 // Returns number of nodes in the linkedList.
 int length(node* head)
 {
-   struct node *tmp = head;
-    int len = 0;
-   while (tmp != NULL)
-   {
-      tmp = tmp->next;
-      len++;
-   }
-
-   return (len);
+	int size = 0;
+	while (head != NULL)
+	{
+		size++;
+		head = head -> next;
+	}
+	
+	return size;
 }
 
 // parses the string in the linkedList
@@ -25,6 +24,20 @@ int length(node* head)
 //  then toCString function wil return "abc"
 char* toCString(node* head)
 {
+	int size = length (head);
+	char* str = (char*) malloc(size + 1);
+	int i = 0;
+
+	while (head != NULL) 
+	{
+		str [i] = head -> letter;
+		head = head -> next;
+		i++;
+	}
+	
+	str [size] = '\0';
+	return str;
+
 }
 
 // inserts character to the linkedlist
@@ -33,11 +46,37 @@ char* toCString(node* head)
 // head -> |a|->|b|->|c|->|x|
 void insertChar(node** pHead, char c)
 {
+	node* newNode = (node*)malloc(sizeof(node));
+	newNode -> letter = c;
+	newNode -> next = NULL;
+
+	if (*pHead == NULL) 
+	{
+		*pHead = newNode;
+	}
+	else 
+	{
+		node* currentnode = *pHead;
+		while (currentnode -> next != NULL) 
+		{
+			currentnode = currentnode -> next;
+		}
+		currentnode -> next = newNode;
+	}
 }
 
 // deletes all nodes in the linkedList.
 void deleteList(node** pHead)
 {
+	node* currentnode = *pHead;
+	while (currentnode != NULL) 
+	{
+		node * temp = currentnode;
+		currentnode =currentnode -> next;
+		free (temp);
+	}
+
+	*pHead = NULL;
 }
 
 int main(void)
